@@ -11,10 +11,12 @@ Product-specific repositories may adopt these standards by immutable tag or comm
 ## Standards
 
 - `standards/AWS-0001-localization-internationalization-accessibility.md`
+- [AWS-0002: RubyGems Trusted Publishing (proposed)](standards/AWS-0002-rubygems-trusted-publishing.md)
 
 ## ADRs
 
 - `adrs/ADR-0001-platform-native-localization-with-shared-semantics.md`
+- [ADR-0002: RubyGems Trusted Publishing (proposed)](adrs/ADR-0002-rubygems-trusted-publishing.md)
 
 ## Agent skills
 
@@ -25,6 +27,8 @@ Product-specific repositories may adopt these standards by immutable tag or comm
 ## Adoption
 
 Use `templates/adoption.md` in the adopting repository and pin the adoption to a published tag or commit SHA.
+
+Use the [RubyGems release checklist](templates/rubygems-release-checklist.md) when adopting Trusted Publishing. This repository is canonical; the `scarver2/engineering-standards` fork mirrors accepted changes without independent policy edits.
 
 ## Versioning
 
