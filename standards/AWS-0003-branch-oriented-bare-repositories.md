@@ -13,7 +13,7 @@ Standardize human-readable, isolated Git working directories for parallel human 
   a1web/
     rodeo/
       .bare/                  # shared Git object database
-      .git                    # optional pointer; validate tool compatibility
+      .git                    # pointer to .bare; required for tested Herdr root workflow
       main/
       feature/implement-bluebonnet-theme/
       chore/upgrade-ruby/
@@ -41,10 +41,10 @@ cd ~/Projects/a1web/example
 git clone --bare git@github.com:a1web/example.git .bare
 git --git-dir=.bare config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*'
 git --git-dir=.bare fetch origin
-git --git-dir=.bare worktree add --track -b main main origin/main
+printf 'gitdir: ./.bare\n' > .git\ngit --git-dir=.bare worktree add main main\ngit --git-dir=.bare branch --set-upstream-to=origin/main main
 ```
 
-Confirm the actual default branch and whether `main` already exists before running the final command. In particular, do not assume `git worktree` works from the parent directory without explicit `--git-dir`. A root `.git` pointer may improve tool discovery but is optional and must be validated; never overwrite an existing `.git`.
+Confirm the actual default branch and whether `main` already exists before running the final commands. For a bare clone of a repository whose default branch is `main`, the local `main` branch already exists: do **not** use `-b main` or `--track -b main`. If the default branch differs, adapt the branch and path. Herdr's disposable acceptance test required a root `.git` pointer (`gitdir: ./.bare`) when creating worktrees from the repository root. Never overwrite an existing `.git`; qualify all other agents and tools before final adoption. Agents must run inside checked-out worktrees, not the root. Use explicit `--git-dir` where appropriate.
 
 For new work:
 
@@ -53,7 +53,7 @@ cd ~/Projects/a1web/example
 git --git-dir=.bare worktree add -b feature/implement-bluebonnet-theme feature/implement-bluebonnet-theme main
 ```
 
-Validate commands against a disposable repository and correct any bare-repository/worktree-specific limitations before codifying scripts.
+These commands require confirming the bare clone's current HEAD and upstream refs; fail closed if ambiguous. Validate commands against a disposable repository before codifying scripts. Do not treat Herdr idle/working detection as reliable while an agent awaits sign-in or other interactive onboarding. Restarting Herdr can restore layout without restoring running agents, and orphan subprocesses require explicit reconciliation.
 
 ## Agent isolation and provenance
 
