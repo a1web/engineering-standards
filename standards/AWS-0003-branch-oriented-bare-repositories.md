@@ -75,3 +75,14 @@ Trail Code is the selected successor to Graft in Cora's toolchain plan; verify i
 ## Adoption and rollout
 
 This standard becomes authoritative only after owner review, merge, immutable release tag, and explicit adoption in each repository. Test in a disposable repo first; migrate active work only through a separately approved plan. Do not disturb Rodeo's launch environment.
+
+## Ruby toolchain security baseline (23 October 2026)
+
+For new A1Web Ruby-based engineering tooling, target **Ruby 4.0.9** or a subsequently approved security-patched release. Ruby 4.0.9 addresses regular-expression compilation vulnerabilities identified in the Ruby upstream security advisory (including GitLab-associated CVEs). Source: https://www.ruby-lang.org/en/news/2026/10/23/ruby-4-0-9-released/ .
+
+- Install and select the version under the dedicated agent user's `mise` environment; preserve the previous Ruby until validation completes.
+- Pin `ruby 4.0.9` in the tooling project's `.mise.toml` or approved version file, rather than relying only on a mutable global default.
+- Verify `ruby -v`, OpenSSL, Psych/YAML, readline, Bundler and the complete worktree tooling suite including disposable end-to-end checks.
+- Record tool versions, test results, rollback instructions and source/build provenance. Never print secrets.
+- Do not infer that changing Cora's Ruby upgrades Rodeo containers, CI, or production; those require separate exact-head qualification and release authorization.
+- This proposed baseline remains subject to repository-owner approval and immutable standards publication.
