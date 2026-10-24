@@ -76,12 +76,15 @@ Trail Code is the selected successor to Graft in Cora's toolchain plan; verify i
 
 This standard becomes authoritative only after owner review, merge, immutable release tag, and explicit adoption in each repository. Test in a disposable repo first; migrate active work only through a separately approved plan. Do not disturb Rodeo's launch environment.
 
-## Ruby toolchain security baseline (23 October 2026)
+## Ruby and RubyGems toolchain baseline (23 October 2026)
 
 For new A1Web Ruby-based engineering tooling, target **Ruby 4.0.9** or a subsequently approved security-patched release. Ruby 4.0.9 addresses regular-expression compilation vulnerabilities identified in the Ruby upstream security advisory (including GitLab-associated CVEs). Source: https://www.ruby-lang.org/en/news/2026/10/23/ruby-4-0-9-released/ .
 
 - Install and select the version under the dedicated agent user's `mise` environment; preserve the previous Ruby until validation completes.
 - Pin `ruby 4.0.9` in the tooling project's `.mise.toml` or approved version file, rather than relying only on a mutable global default.
+- Target **RubyGems 4.0.23 and Bundler 4.0.23** for Cora's Ruby 4.0.9 engineering toolchain. In the active mise-managed Ruby 4.0.9 environment, update with `gem update --system` (or explicitly `gem update --system 4.0.23` for reproducibility); do not use system Ruby or administrator privileges.
+- Verify `gem --version` and `bundle --version` both report `4.0.23`, and verify the resolved executables are within the intended mise Ruby 4.0.9 installation. Record the effective RubyGems/Bundler versions in project receipts; application lockfiles and container builds remain independently controlled.
+- Reference: https://github.com/ruby/rubygems/blob/v4.0.23/CHANGELOG.md .
 - Verify `ruby -v`, OpenSSL, Psych/YAML, readline, Bundler and the complete worktree tooling suite including disposable end-to-end checks.
 - Record tool versions, test results, rollback instructions and source/build provenance. Never print secrets.
 - Do not infer that changing Cora's Ruby upgrades Rodeo containers, CI, or production; those require separate exact-head qualification and release authorization.
